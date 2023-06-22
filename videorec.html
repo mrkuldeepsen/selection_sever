@@ -7,95 +7,129 @@
 	<link rel="stylesheet" href="bootstrap.css">
 	<script src="jquary.js"></script>
 	<style type="text/css">
-	.resizers {
-		background: #0000006b;
-		width: 100px;
-		height: 100px;
-		position: absolute;
-		display: none;
-		top: 100px;
-		left: 100px;
-		z-index: 999;
-		border: 3px solid #4286f4;
-		box-sizing: border-box;
-	}
+		.resizers {
+			background: #0000006b;
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			display: none;
+			top: 100px;
+			left: 100px;
+			z-index: 999;
+			border: 3px solid #4286f4;
+			box-sizing: border-box;
+		}
 
-	.resizers .resizer {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background: white;
-		border: 3px solid #4286f4;
-		position: absolute;
-	}
+		.resizers .resizer {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: white;
+			border: 3px solid #4286f4;
+			position: absolute;
+		}
 
-	.resizers .resizer.ne {
+		.resizers .resizer.ne {
 
-		right: -5px;
-		top: -5px;
-		cursor: ne-resize;
-	}
+			right: -5px;
+			top: -5px;
+			cursor: ne-resize;
+		}
 
-	.resizers .resizer.nw {
-		left: -5px;
-		top: -5px;
-		cursor: nw-resize;
-		/*resizer cursor*/
-	}
+		.resizers .resizer.nw {
+			left: -5px;
+			top: -5px;
+			cursor: nw-resize;
+			/*resizer cursor*/
+		}
 
-	.resizers .resizer.sw {
-		left: -5px;
-		bottom: -5px;
-		cursor: sw-resize;
-	}
+		.resizers .resizer.sw {
+			left: -5px;
+			bottom: -5px;
+			cursor: sw-resize;
+		}
 
-	.resizers .resizer.se {
-		right: -5px;
-		bottom: -5px;
-		cursor: se-resize;
-	}
-	 #canvas{
-		display: none;
-	}
-	#recordvideo {
-		display: none;
-	}
-	button {
-		margin-top: 20px;
-	}
+		.resizers .resizer.se {
+			right: -5px;
+			bottom: -5px;
+			cursor: se-resize;
+		}
 
-	#stop {
-		margin-left: 20px;
+		#canvas {
+			display: none;
+		}
 
-	}
+		#recordvideo {
+			display: none;
+		}
+
+		button {
+			margin-top: 20px;
+		}
+
+		#stop {
+			margin-left: 20px;
+
+		}
 	</style>
 </head>
 
 <body>
-	<br>
-	<label style="width: 100px; margin-left: 25px">Title</label><input id="title" type="text"><br>
-	<label style="width: 100px; margin-left: 25px">Description</label><input id="description" type="text"><br>
-	<button type="button" class="btn btn-danger" id="stop" disabled>Stop</button>
-	<button type="button" id="record" class="btn btn-info">Record Screen</button>
-	<button type="button" class="btn btn-info" id="crop">Crop</button>
-	<button type="button" id="start" class="btn btn-info" id="crop">Start</button>
-	<div style="
-	padding: 10px 0px;
-	/*position: relative;*/
-">
-		<div class='resizers'>
-			<div class='resizer ne'></div>
-			<div class='resizer nw'></div>
-			<div class='resizer sw'></div>
-			<div class='resizer se'></div>
+	<div class="container">
+		<div class="">
+			<br>
+			<img src="./images/screen recorder.png" style="width: 80px; margin-left: 305px;" />
+			<br> 
+			<h3 style="margin-left: 240px;">Screen Recorder</h3>
+			<br>
+			<label style="width: 100px; margin-left: 50px ">Title</label><input id="title" type="text" style="    width: 400px;
+			border-radius: 10px;"><br>
+			<label style="width: 100px; margin-left: 50px">Description</label><input id="description" type="text" style="width: 400px;
+			border-radius: 10px;"><br>
+			<div class="controls " style="margin-left: 84px">
+
+				<!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-record"
+					viewBox="0 0 16 16">
+					<path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z" />
+				</svg> -->
+				<button type="button" class="btn" id="stop" disabled
+					style="border-radius: 18px; width: 150px; background: #ce0c0c; border-color: #ce0c0c; color: aliceblue;">
+					Stop</button>
+				<button type="button" id="record" class="btn"
+					style="border-radius: 18px; width: 150px; background: #ffc90e; border-color: #ffc90e; color: aliceblue;">
+					Record Screen</button>
+				<!-- <svg
+						xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-record"
+						viewBox="0 0 16 16">
+						<path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z" />
+					</svg> -->
+				<button type="button" class="btn" id="crop" style="border-radius: 18px; width: 150px; color: #fff;
+				background-color: #0522ff;
+				border-color: #0522ff;"> Crop</button>
+				<!-- <svg
+						xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-record"
+						viewBox="0 0 16 16">
+						<path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z" />
+					</svg> -->
+				<button type="button" id="start" class="btn btn-info" id="crop" style="border-radius: 18px; width: 150px;">
+					Start</button>
+			</div>
+			<div style="	padding: 10px 62px;	/*position: relative;*/">
+				<div class='resizers'>
+					<div class='resizer ne'></div>
+					<div class='resizer nw'></div>
+					<div class='resizer sw'></div>
+					<div class='resizer se'></div>
+				</div>
+				<video autoplay class="vv" id="videoss" muted
+					style="border: 2px dashed #0000005c; margin-left: 125px; margin-top: 10px;">
+				</video>
+			</div>
+			<canvas id="canvas"></canvas>
+			<button id="recordvideo">Record</button>
 		</div>
-		<video autoplay class="vv" id="videoss" muted style="
-   border: 2px dashed #0000005c;
-">
-		</video>
 	</div>
-	<canvas id="canvas"></canvas>
-	<button id="recordvideo">Record</button>
+
 </body>
 <script type="text/javascript" src="main.js"></script>
 

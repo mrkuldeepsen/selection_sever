@@ -230,7 +230,6 @@ const handleRecord = function ({ stream, mimeType }) {
 async function UploadVideo(blob) {
     try {
         const url = `${API_URL}/ext/video`;
-
         const formData = new FormData();
         formData.append('title', title.value);
         formData.append('description', description.value);
@@ -257,6 +256,7 @@ async function UploadVideo(blob) {
             source.type = 'video/mp4';
             video.appendChild(source);
             document.body.appendChild(video);
+            window.close()
         } else {
             console.log('Error uploading video:', response.statusText);
         }
