@@ -1,16 +1,12 @@
-
-/////////////////////////////////////////////////////////////////
-
-const API_URL = "http://localhost:5000/api";
+// const API_URL = "http://localhost:5000/api";
 // const API_URL = "http://alpha.yourarchiv.com/api";
-
-// const API_URL = "http://yourarchiv.com/api";
+const API_URL = "http://yourarchiv.com/api";
 
 let shouldStop = false;
 document.body.style.zoom = "80%";
 let stopped = false;
-const recordButton = document.getElementById('record');
 
+const recordButton = document.getElementById('record');
 const videoElement = document.getElementsByTagName("video")[0];
 
 const recordBtn = document.querySelector("#recordvideo");
@@ -21,17 +17,13 @@ const stopButton = document.getElementById('stop');
 const title = document.getElementById('title');
 const description = document.getElementById('description');
 
-
-
 const params = Object.fromEntries(new URLSearchParams(location.search));
 
 $('#start').prop('disabled', true);
-
 $('#crop').prop('disabled', true);
 $('#start').css('display', 'none');
 
 function startRecord() {
-
     // $('.btn-info').prop('disabled', true);
     $('#start').prop('disabled', false);
     $('#re').prop('disabled', true);
@@ -44,17 +36,16 @@ function startRecord() {
 
 function stopRecord() {
     $('#record').prop('disabled', false);
-
     $('#re').prop('disabled', false);
     $('#start').prop('disabled', true);
 
     $('.btn-info').prop('disabled', false);
-
     $('#stop').prop('disabled', true);
     $('#crop').prop('disabled', true);
     $('.resizers').css('display', 'none');
 
 }
+
 stopButton.addEventListener('click', function () {
     shouldStop = true;
     $('#start').css('display', 'none');
@@ -68,20 +59,15 @@ recordButton.addEventListener('click', function () {
 crop.addEventListener('click', function () {
     $('.resizers').css('display', 'block');
     $('#start').css('display', 'initial');
-
 });
 
 const audioRecordConstraints = {
     echoCancellation: true
 }
 
-
 const handleRecord = function ({ stream, mimeType }) {
-
     startRecord()
-
     let recordedChunks = [];
-
     stopped = false;
 
     const mediaRecorder = new MediaRecorder(stream);
@@ -92,15 +78,10 @@ const handleRecord = function ({ stream, mimeType }) {
         }
 
         if (shouldStop === true && stopped === false) {
-
             mediaRecorder.stop();
-
             stopped = true;
-
         }
-
     };
-
 
 
     mediaRecorder.onstop = function () {
@@ -108,7 +89,6 @@ const handleRecord = function ({ stream, mimeType }) {
         recordedChunks = [];
 
         var croppn = window.getComputedStyle(cropp, null).display;
-
         if (croppn === 'none') {
 
             const filename = window.prompt('Enter file name');
@@ -130,100 +110,6 @@ const handleRecord = function ({ stream, mimeType }) {
     mediaRecorder.start(200);
 }
 
-
-// async function UploadVideo(blob) {
-//     chrome.storage.local.get(null, async (res) => {
-//         const url = `${API_URL}/ext/video`;
-
-//         const reader = new FileReader();
-//         reader.readAsDataURL(blob);
-
-//         reader.onloadend = async () => {
-
-//             const base64data = reader.result.replace(/^data:.*,/, "");
-
-//             const jsonData = {
-//                 title: title.value,
-//                 description: description.value,
-//                 date: new Date().toISOString().slice(0, 16),
-//                 video: base64data,
-//             };
-
-//             const response = await fetch(url, {
-//                 method: "POST",
-//                 headers: {
-//                     "Authorization": "bearer " + res.token,
-//                     "Content-Type": "application/json",
-//                 },
-//                 body: JSON.stringify(jsonData),
-//             });
-
-//             if (response.ok) {
-//                 console.log("Video uploaded successfully");
-//                 // create video element and add to DOM
-//                 const video = document.createElement("video");
-//                 video.controls = true;
-//                 const source = document.createElement("source");
-
-//                 source.src = `data:video/mp4;base64,${base64data}`;
-//                 source.type = "video/mp4";
-//                 video.appendChild(source);
-//                 document.body.appendChild(video)
-//             } else {
-//                 console.log("Error uploading video:", response.statusText)
-//             }
-//         }
-//     })
-// }
-
-// in Json formate 
-
-// async function UploadVideo(blob) {
-//     try {
-//         const url = `${API_URL}/api/ext/video`;
-
-//         const reader = new FileReader();
-//         reader.readAsDataURL(blob);
-
-//         reader.onloadend = async () => {
-//             const base64data = reader.result.replace(/^data:.*,/, "");
-
-//             const jsonData = {
-//                 title: title.value,
-//                 description: description.value,
-//                 date: new Date().toISOString().slice(0, 16),
-//                 video: base64data,
-//             };
-
-//             const response = await fetch(url, {
-//                 method: "POST",
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                 },
-//                 body: JSON.stringify(jsonData),
-//             });
-
-//             if (response.ok) {
-//                 console.log("Video uploaded successfully");
-//                 // create video element and add to DOM
-//                 const video = document.createElement("video");
-//                 video.controls = true;
-//                 const source = document.createElement("source");
-
-//                 source.src = `data:video/mp4;base64,${base64data}`;
-//                 source.type = "video/mp4";
-//                 video.appendChild(source);
-//                 document.body.appendChild(video)
-//             } else {
-//                 console.log("Error uploading video:", response.statusText)
-//             }
-//         };
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
-
-
 //Form data type 
 
 
@@ -237,6 +123,9 @@ async function UploadVideo(blob) {
         const filename = `video_${Math.floor(Math.random() * 100000000)}.mp4`;
         formData.append('video', blob, filename)
         const token = await GetStorageToken("token")
+
+        console.log('formData>>>>>>>>>>>>', formData);
+
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -256,7 +145,10 @@ async function UploadVideo(blob) {
             source.type = 'video/mp4';
             video.appendChild(source);
             document.body.appendChild(video);
-            window.close()
+
+
+            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxx');
+            // window.close()
         } else {
             console.log('Error uploading video:', response.statusText);
         }
@@ -330,84 +222,54 @@ async function recordVideo() {
 
 }
 
-/////////////////////////////////////////////
 var voicene;
+
 async function recordScreen() {
-
     const mimeType = 'video/mp4';
-
     shouldStop = false;
-
     const constraints = {
-
         video: {
-
             cursor: 'motion'
-
         }
-
     };
 
     if (!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia)) {
-
         return window.alert('Screen Record not supported!')
-
     }
 
     let stream = null;
-
     const displayStream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: "motion" }, audio: { 'echoCancellation': true } });
 
     if (window.confirm("Record audio with screen?")) {
-
         const audioContext = new AudioContext();
-
-
-
         const voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { 'echoCancellation': true }, video: false });
-
         const userAudio = audioContext.createMediaStreamSource(voiceStream);
-
-
-
         const audioDestination = audioContext.createMediaStreamDestination();
-
         userAudio.connect(audioDestination);
 
-
-
         if (displayStream.getAudioTracks().length > 0) {
-
             const displayAudio = audioContext.createMediaStreamSource(displayStream);
-
             displayAudio.connect(audioDestination);
-
         }
-
-
 
         const tracks = [...displayStream.getVideoTracks(), ...audioDestination.stream.getTracks()]
         voicene = displayStream.getAudioTracks();
         stream = displayStream;
 
         handleRecord({ stream, mimeType })
-
     } else {
-
         stream = displayStream;
-
         handleRecord({ stream, mimeType });
-
     };
 
     videoElement.srcObject = stream;
-
 }
-////////////////////////////////
+
 
 const el = document.querySelector(".resizers");
 const ot = document.querySelector(".vv");
 const s_ont = ot.getBoundingClientRect();
+
 var top_x_s = s_ont.top;
 var left_x_s = s_ont.left;
 el.style.left = left_x_s + 50 + 'px';
@@ -434,12 +296,10 @@ function mousedown(e) {
             var x = rect.left - newX;
             var y = rect.top - newY;
 
-            // console.log(x, y);
             var bottom = ont.bottom;
             var top = ont.top;
             var bottom_h = bottom - el.offsetHeight;
             var right_w = ont.right - el.offsetWidth;
-            console.log(bottom_h);
 
             if (x < right_w && x > ont.left && y > top && y < bottom_h) {
                 el.style.left = x + "px";
@@ -462,44 +322,28 @@ let currentResizer;
 
 for (let resizer of resizers) {
     resizer.addEventListener("mousedown", mousedown);
-
     function mousedown(e) {
         currentResizer = e.target;
         isResizing = true;
-
         let prevX = e.clientX;
         let prevY = e.clientY;
+
+        const initialRect = el.getBoundingClientRect();
 
         window.addEventListener("mousemove", mousemove);
         window.addEventListener("mouseup", mouseup);
 
         function mousemove(e) {
             const rect = el.getBoundingClientRect();
-            // const bb = ot.getBoundingClientRect();
 
-
-            // console.log(x, y);
-            // var b_bottom_x = bb.bottom;
-            // var b_top_x = bb.top;
-            // var b_left_x = bb.left;
-            // var b_right_x = bb.right;
-
-            // var b_bottom_n = rect.bottom;
-            // var b_top_n = rect.top;
-            // var b_left_n = rect.left;
-            // var b_right_n = rect.right;
-            // var b_t = b_top_n - b_top_x;
-            // el.style.borderTop = b_t+"px solid red";
-            // console.log('hello')
-            // console.log(b_t)
-            if (currentResizer.classList.contains("se")) {
+            if (currentResizer && currentResizer.classList.contains("se")) {
                 el.style.width = rect.width - (prevX - e.clientX) + "px";
                 el.style.height = rect.height - (prevY - e.clientY) + "px";
-            } else if (currentResizer.classList.contains("sw")) {
+            } else if (currentResizer && currentResizer.classList.contains("sw")) {
                 el.style.width = rect.width + (prevX - e.clientX) + "px";
                 el.style.height = rect.height - (prevY - e.clientY) + "px";
                 el.style.left = rect.left - (prevX - e.clientX) + "px";
-            } else if (currentResizer.classList.contains("ne")) {
+            } else if (currentResizer && currentResizer.classList.contains("ne")) {
                 el.style.width = rect.width - (prevX - e.clientX) + "px";
                 el.style.height = rect.height + (prevY - e.clientY) + "px";
                 el.style.top = rect.top - (prevY - e.clientY) + "px";
@@ -515,39 +359,12 @@ for (let resizer of resizers) {
         }
 
         function mouseup() {
-            const ttt = ot.getBoundingClientRect();
-            const nnn = el.getBoundingClientRect();
-
-
-            // console.log(x, y);
-            var bottom_x = ttt.bottom;
-            var top_x = ttt.top;
-            var left_x = ttt.left;
-            var right_x = ttt.right;
-
-            var bottom_n = nnn.bottom;
-            var top_n = nnn.top;
-            var left_n = nnn.left;
-            var right_n = nnn.right;
-            console.log(bottom_n, bottom_x)
-
-            if (right_n >= right_x || left_n <= left_x || bottom_n >= bottom_x || top_n <= top_x) {
-                console.log("ok")
-                el.style.width = 100 + "px";
-                el.style.height = 100 + "px";
-                el.style.left = left_x + 50 + 'px';
-                el.style.top = top_x + 50 + 'px';
-            }
-
-
             window.removeEventListener("mousemove", mousemove);
             window.removeEventListener("mouseup", mouseup);
             isResizing = false;
         }
     }
 }
-
-
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
@@ -559,7 +376,6 @@ const constrains = {
 };
 
 let recording = false;
-let mediaRecorder;
 let recordedChunks;
 
 recordBtn.addEventListener("click", () => {
@@ -567,9 +383,9 @@ recordBtn.addEventListener("click", () => {
     if (recording) {
         recordBtn.textContent = "Stop";
         const canvasStream = canvas.captureStream(30);
-        if (voicene[0]) {
-            canvasStream.addTrack(voicene[0]);
-            console.log(voicene)
+        if (voicene && voicene[0]) {
+            canvasStream.addTrack(voicene && voicene[0]);
+            console.log(voicene && voicene)
         }
         // --> joint the two streams
         mediaRecorder = new MediaRecorder(canvasStream, {
@@ -603,13 +419,14 @@ recordBtn.addEventListener("click", () => {
 
             a.href = url;
             a.download = `${filename || 'recording'}.mp4`;
-            a.click();
+            // a.click();
 
             URL.revokeObjectURL(url);
-            location.reload();
+            // location.reload();
         }, 0);
     }
 });
+
 
 var start = document.getElementById("start");
 
@@ -617,21 +434,20 @@ start.addEventListener("click", () => {
     $('.resizers').css('pointer-events', 'none');
     $('#start').prop('disabled', true);
     $('#crop').prop('disabled', true);
+
     var croppv = window.getComputedStyle(cropp, null).display;
+
     if (croppv === 'block') {
         // body...
         recordBtn.click();
         // $('#download').css('display', 'block');
         // $('.resizers').css('display', 'none');
-
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
         var video = document.getElementById('videoss');
         // video.addEventListener('play', function() {
         const m_ttt = ot.getBoundingClientRect();
         const m_nnn = el.getBoundingClientRect();
-
-
         // console.log(x, y);
         var top_x = m_ttt.top;
         var left_x = m_ttt.left;
@@ -648,10 +464,8 @@ start.addEventListener("click", () => {
         var $this = video; //cache
 
         console.log(m_l, m_t);
-
         (function loop() {
             if (!$this.paused && !$this.ended) {
-
                 ctx.drawImage($this,
                     m_l, m_t, // Start at 70/20 pixels from the left and the top of the image (crop),
                     wi, hi, // "Get" a `50 * 50` (w * h) area from the source image (crop),

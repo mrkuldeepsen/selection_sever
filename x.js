@@ -1,11 +1,11 @@
-const API_URL = "http://localhost:5000/api";
-const WEBSITE_URL = "http://localhost:3000";
+// const API_URL = "http://localhost:5000/api";
+// const WEBSITE_URL = "http://localhost:3000";
 
 // const API_URL = "http://alpha.yourarchiv.com/api";
 // const WEBSITE_URL = "http://alpha.yourarchiv.com";
 
-// const API_URL = "http://yourarchiv.com/api";
-// const WEBSITE_URL = "http://yourarchiv.com";
+const API_URL = "http://yourarchiv.com/api";
+const WEBSITE_URL = "http://yourarchiv.com";
 
 const params = Object.fromEntries(new URLSearchParams(location.search));
 var position;
