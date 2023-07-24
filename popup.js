@@ -10,11 +10,11 @@ var selections;
 // const API_URL = "http://alpha.yourarchiv.com/api";
 // const WEBSITE_URL = "http://alpha.yourarchiv.com";
 
-const API_URL = "http://yourarchiv.com/api";
-const WEBSITE_URL = "http://yourarchiv.com";
+// const API_URL = "http://yourarchiv.com/api";
+// const WEBSITE_URL = "http://yourarchiv.com";
 
-// const API_URL = "http://localhost:5000/api";
-// const WEBSITE_URL = "http://localhost:3000";
+const API_URL = "http://localhost:5000/api";
+const WEBSITE_URL = "http://localhost:3000";
 
 var finalScreenshot = null;
 var finalScreenshot2 = null;
@@ -58,18 +58,13 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(OnLoad, 0
 document.getElementById("tabAudio").addEventListener("click", () => SelectTab("audio"))
 document.getElementById("tabText").addEventListener("click", () => SelectTab("text"))
 
+const progressBar = document.getElementById('progress-bar-inner');
+const cancelButton = document.getElementById('cancel-button');
+
+cancelButton.addEventListener('click', cancelUpload)
 
 async function OnLoad() {
-
-	// chrome.tabs.create({ url: 'chrome-extension://ehcphedooilplmeibieocblnhcadjfkk/x.html?capture=abc' }, function(tab){
-	// 	chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(){});
-	// });
-	// return;
-
-	// tabs
-	// var selectedTab = await SessionData.get("tab");
 	const selectedTab = localStorage.getItem('tab')
-
 	if (selectedTab && selectedTab === "text")
 		SelectTab("text");
 	else SelectTab("audio");
@@ -283,83 +278,58 @@ function AudioPanel() {
 
 var btnrecording = document.getElementById('btnrecording')
 
-// btnrecording.addEventListener('click', async function () {
-
-// 	const url = `/videorec.html?login=${btoa(username + ":" + password)}&user=${username}`;
-// 	// chrome.tabs.create({ url: url });
-// 	// window.location.href = url
-// 	// window.open(url, '_blank', 'width=750,height=600')
-// 	window.open(url, 'popup', 'width=800,height=600,scrollbars=yes,resizable=yes')
-
-// })
-
-/***Dragable Table open video */
 btnrecording.addEventListener('click', async function () {
 	const url = `/videorec.html?login=${btoa(username + ":" + password)}&user=${username}`;
 	window.open(url, 'popup', 'width=800,height=600,scrollbars=yes,resizable=yes')
-	// document.getElementById('mydiv').style.display = 'block';
-	// dragElement(document.getElementById("mydiv"));
-
-
-	// function dragElement(elmnt) {
-	// 	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-	// 	if (document.getElementById(elmnt.id + "header")) {
-	// 		/* if present, the header is where you move the DIV from:*/
-	// 		document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-	// 	} else {
-	// 		/* otherwise, move the DIV from anywhere inside the DIV:*/
-	// 		elmnt.onmousedown = dragMouseDown;
-	// 	}
-
-	// 	function dragMouseDown(e) {
-	// 		e = e || window.event;
-	// 		e.preventDefault();
-	// 		// get the mouse cursor position at startup:
-	// 		pos3 = e.clientX;
-	// 		pos4 = e.clientY;
-	// 		document.onmouseup = closeDragElement;
-	// 		// call a function whenever the cursor moves:
-	// 		document.onmousemove = elementDrag;
-	// 	}
-
-	// 	function elementDrag(e) {
-	// 		e = e || window.event;
-	// 		e.preventDefault();
-	// 		// calculate the new cursor position:
-	// 		pos1 = pos3 - e.clientX;
-	// 		pos2 = pos4 - e.clientY;
-	// 		pos3 = e.clientX;
-	// 		pos4 = e.clientY;
-	// 		// set the element's new position:
-	// 		elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-	// 		elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-	// 	}
-
-	// 	function closeDragElement() {
-	// 		/* stop moving when mouse button is released:*/
-	// 		document.onmouseup = null;
-	// 		document.onmousemove = null;
-	// 	}
-	// }
 })
+
+
+const addBgColor = (tab) => {
+	if (tab === "audio") {
+		$("#tabAudio").css("background", "#333")
+		$("#tabText").css("background", "#FFC90E");
+
+	} else {
+		$("#tabText").css("background", "#333");
+		$("#tabAudio").css("background", "#FFC90E");
+
+	}
+}
 
 
 
 async function SelectTab(tab) {
+	addBgColor(tab)
+
+	$('ul#tabsPanel .tabText').removeClass('activetab');
+
+
 	$("#lbl-username").text(`👤 ${localStorage.getItem('lbl-username')}`)
 	if (tab === "audio") {
-		$("#tabsPanel").css("background-image", "linear-gradient(-135deg, #333 70%, #bbb 70%)");
-		$("#tabSelected").attr("style", "background-image: linear-gradient(-135deg, #FFC90E 70%, #333 70%) !important");
-		$("#tabAudio").css("color", "black");
-		$("#tabText").css("color", "white");
+		$("#tabAudio").addClass("active")
+		$("#tabText").removeClass("active")
+
+		// $("#tabsPanel").css("background-image", "linear-gradient(-135deg, #333 70%, #bbb 70%)");
+		// $("#tabSelected").attr("style", "background-image: linear-gradient(-135deg, #FFC90E 70%, #333 70%) !important");
+
+
+		$("#tabAudio").css("color", "#fff");
+		$("#tabText").css("color", "black");
 		$("#audioPanel").show();
 		$("#articlePanel").hide();
+		$("#description").hide();
+
 	}
 	else if (tab === "text") {
-		$("#tabsPanel").css("background-image", "linear-gradient(-135deg, #FFC90E 70%, #bbb 70%)");
-		$("#tabSelected").attr("style", "background-image: linear-gradient(-135deg, #333 70%, #FFC90E 70%) !important");
-		$("#tabText").css("color", "black");
-		$("#tabAudio").css("color", "white");
+		// $("#tabsPanel").css("background-image", "linear-gradient(-135deg, #FFC90E 70%, #bbb 70%)");
+		// $("#tabSelected").attr("style", "background-image: linear-gradient(-135deg, #333 70%, #FFC90E 70%) !important");
+
+		$("#tabText").addClass("active")
+		$("#tabAudio").removeClass("active")
+
+
+		$("#tabText").css("color", "#fff");
+		$("#tabAudio").css("color", "black");
 		$("#articlePanel").show();
 		$("#audioPanel").hide();
 	}
@@ -546,10 +516,7 @@ async function editComment() {
 
 }
 
-
-
 /************ */
-
 async function Stop() {
 	$("#btnPause, #btnStop, #btnMark").addClass("disabled");
 	$("#slcMarks").html("");
@@ -567,6 +534,11 @@ async function Stop() {
 		recorder.stop();
 		localStorage.removeItem('pauseRecorderTime');
 	}
+	console.log('recorder.state', recorder.state);
+	if (recorder.state === "paused") {
+		recorder.stop();
+		localStorage.removeItem('pauseRecorderTime');
+	}
 
 	var comment = prompt("Please enter a comment for the recording:");
 
@@ -576,11 +548,7 @@ async function Stop() {
 	localStorage.setItem("comments", JSON.stringify(comments));
 
 	localStorage.setItem("recordings", JSON.stringify(recordings));
-
-
 }
-
-
 
 function SelectAudio() {
 	var i = $("#slcRecordings")[0].selectedIndex;
@@ -589,7 +557,6 @@ function SelectAudio() {
 
 /************************************************************************ */
 function Pause() {
-
 	$("#btnPause").addClass("disabled");
 	$("#btnRecord").removeClass("disabled");
 	$("#record-animation2").removeClass("play");
@@ -656,67 +623,147 @@ const texAudio = localStorage.getItem('texAudio')
 
 document.getElementById("txtAudioDescription").value = texAudio
 
+
+//********** Audio uploading  ********/
+const progressBars = document.getElementById("progress-bar");
+
 async function UploadAudio() {
-	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+
+	const successMessage = document.getElementById("success-message")
+	const uploadingMessage = document.getElementById("uploading-message")
+
+	progressBars.style.display = "block";
+
+	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 	const url = new URL(tab.url).toString();
 	const title = tab.title || "";
 
-
-	const description = $("#txtAudioDescription").val()
+	const description = $("#txtAudioDescription").val();
 	const date = new Date().toISOString().slice(0, 16);
 	const meta = await GetMeta();
 
 	const pageDate = meta.date || new Date().toISOString().slice(0, 16);
 	const token = await GetStorage("token");
-	const formData = new FormData()
+	const formData = new FormData();
 
-	const x = JSON.parse(localStorage.getItem('myRecordingKey'))
-	const audiComment = JSON.parse(localStorage.getItem('tableData'))
-
-	// const comments = audiComment.map((item) => item.comment)
+	const x = JSON.parse(localStorage.getItem("myRecordingKey"));
+	const audiComment = JSON.parse(localStorage.getItem("tableData"));
 
 	const obj = recordings.reduce((acc, curr, index) => {
 		acc[index] = curr;
 		return acc;
 	}, {});
 
+	formData.append("comment", JSON.stringify(comments));
+	formData.append("recording", JSON.stringify(obj));
 
-	formData.append('comment', JSON.stringify(comments));
-	formData.append('recording', JSON.stringify(obj));
+	formData.append("title", title);
+	formData.append("description", description);
+	formData.append("pageDate", pageDate);
+	formData.append("date", date);
+	formData.append("url", url);
 
-	formData.append('title', title);
-	formData.append('description', description)
-	formData.append('pageDate', pageDate)
-	formData.append('date', date);
-	formData.append('url', url);
+	// Create XMLHttpRequest object
+	const xhr = new XMLHttpRequest();
+	// Set progress event listener
 
-	try {
-		const response = await fetch(`${API_URL}/ext/upload-audio`, {
-			method: 'POST',
-			headers: {
-				'Authorization': 'bearer ' + token,
-			},
-			body: formData
-		})
+	// Set load event listener
+	xhr.addEventListener("load", async () => {
+		if (xhr.status === 200) {
+			$("#txtAudioDescription").val("");
+			$("#btnUploadAudio").addClass("disabled");
+			recordings = [];
+			$("#btnUploadAudio").text("Audio saved");
+			$("#slcRecordings").html("");
+			await SessionData.set("recordingDescription", "");
+			await SessionData.set("recordings", []);
+			setTimeout(() => $("#btnUploadAudio").text("Save"), 2000);
+			localStorage.removeItem("texAudio");
+			localStorage.removeItem("comments");
 
-		const data = await response.json()
+			// Reset the audio element's "muted" attribute
+			const audioElement = document.getElementById("yourAudioElementId");
+			audioElement.muted = false;
+		} else {
+			console.log("Error uploading audio file: " + xhr.statusText);
+			const x = JSON.parse(xhr.response)
 
-		$("#txtAudioDescription").val("");
-		$("#btnUploadAudio").addClass("disabled")
-		recordings = [];
-		$("#btnUploadAudio").text("Audio saved");
-		$("#slcRecordings").html("");
-		await SessionData.set("recordingDescription", "");
-		await SessionData.set("recordings", []);
-		setTimeout(() => $("#btnUploadAudio").text("Save"), 3000)
-		localStorage.removeItem("texAudio")
-		localStorage.removeItem("comments")
-		window.close()
+			progressBar.style.display = "none";
+			cancelButton.style.display = "none";
+			successMessage.style.display = "block";
+			uploadingMessage.style.display = "none";
 
-	} catch (error) {
-		console.log("Error uploading audio file: " + error.message);
-	}
+			alert(x.error.message[0])
+
+		}
+	});
+
+
+	xhr.upload.addEventListener("progress", (event) => {
+		if (event.lengthComputable) {
+			const progress = Math.round((event.loaded / event.total) * 100);
+			progressBar.style.width = progress + "%";
+			uploadingMessage.style.display = "block";
+
+			if (progress === 100) {
+				setTimeout(() => {
+					cancelButton.style.display = "none";
+					progressBars.style.display = "none";
+
+
+					if (xhr.statusText == 200) {
+						successMessage.style.display = "block";
+						uploadingMessage.style.display = "none";
+					}
+					else {
+						successMessage.style.display = "none";
+						uploadingMessage.style.display = "none";
+					}
+
+				}, 1000)
+
+			}
+		}
+	});
+
+	// Send the request
+	xhr.open("POST", `${API_URL}/ext/upload-audio`);
+	xhr.setRequestHeader("Authorization", "bearer " + token);
+
+	// Display the progress bar and cancel button
+	progressBar.style.width = "0%";
+	progressBar.style.display = "block";
+	cancelButton.style.display = "block";
+
+	xhr.send(formData);
+
+	// Cancel button click event listener
+	cancelButton.addEventListener("click", () => {
+		xhr.abort();
+		progressBar.style.width = "0%";
+		progressBar.style.display = "none";
+		cancelButton.style.display = "none";
+	});
 }
+
+async function cancelUpload() {
+	recorder.stop();
+	$("#btnPause, #btnStop, #btnMark").addClass("disabled");
+	$("#slcMarks").html("");
+	$("#btnRecord").removeClass("disabled");
+	$("#lblRecordTime").text("00:00:00");
+	$("#record-animation2").removeClass("play");
+	recording = false;
+	recordTime = 0;
+	clearInterval(recordTimer);
+	audioData = [];
+	duration = 0;
+	progressBar.style.width = "0%";
+	progressBar.style.display = "none";
+	cancelButton.style.display = "none";
+}
+
+
 
 function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
 	const byteCharacters = atob(b64Data);

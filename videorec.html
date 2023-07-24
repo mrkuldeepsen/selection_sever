@@ -71,6 +71,28 @@
 			margin-left: 20px;
 
 		}
+
+		#cancel-button {
+			display: none;
+		}
+
+		#progress-bar {
+			display: none;
+			margin-left: 100px;
+			width: 70%;
+			padding: 5px;
+			border-radius: 25px;
+			background-color: #898989;
+		}
+
+		#progress-bar-inner {
+			display: none;
+			width: 0;
+			height: 20px;
+			border-radius: 25px;
+			background-color: #FFC90E;
+			transition: width 0.3s;
+		}
 	</style>
 </head>
 
@@ -79,7 +101,7 @@
 		<div class="">
 			<br>
 			<img src="./images/screen recorder.png" style="width: 80px; margin-left: 305px;" />
-			<br> 
+			<br>
 			<h3 style="margin-left: 240px;">Screen Recorder</h3>
 			<br>
 			<label style="width: 100px; margin-left: 50px ">Title</label><input id="title" type="text" style="    width: 400px;
@@ -87,31 +109,19 @@
 			<label style="width: 100px; margin-left: 50px">Description</label><input id="description" type="text" style="width: 400px;
 			border-radius: 10px;"><br>
 			<div class="controls " style="margin-left: 84px">
-
-				<!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-record"
-					viewBox="0 0 16 16">
-					<path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z" />
-				</svg> -->
 				<button type="button" class="btn" id="stop" disabled
 					style="border-radius: 18px; width: 150px; background: #ce0c0c; border-color: #ce0c0c; color: aliceblue;">
 					Stop</button>
 				<button type="button" id="record" class="btn"
 					style="border-radius: 18px; width: 150px; background: #ffc90e; border-color: #ffc90e; color: aliceblue;">
 					Record Screen</button>
-				<!-- <svg
-						xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-record"
-						viewBox="0 0 16 16">
-						<path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z" />
-					</svg> -->
+
 				<button type="button" class="btn" id="crop" style="border-radius: 18px; width: 150px; color: #fff;
 				background-color: #0522ff;
 				border-color: #0522ff;"> Crop</button>
-				<!-- <svg
-						xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-record"
-						viewBox="0 0 16 16">
-						<path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10z" />
-					</svg> -->
-				<button type="button" id="start" class="btn btn-info" id="crop" style="border-radius: 18px; width: 150px;">
+
+				<button type="button" id="start" class="btn btn-info" id="crop"
+					style="border-radius: 18px; width: 150px;">
 					Start</button>
 			</div>
 			<div style="	padding: 10px 62px;	/*position: relative;*/">
@@ -127,6 +137,23 @@
 			</div>
 			<canvas id="canvas"></canvas>
 			<button id="recordvideo">Record</button>
+			<div id="uploading-message"
+				style="display: none; color: rgba(11, 0, 0, 0.997); font-size: 22px; font-weight: 500;    margin-left: 246px; ">
+				Uploading...
+			</div>
+			<div style="display: flex;">
+				<div id="progress-bar">
+					<div id="progress-bar-inner"></div>
+				</div>
+				<button id="cancel-button"
+					style="border-radius: 18px; width: 150px; background: #ce0c0c; border-color: #ce0c0c; color: aliceblue; margin-left: 15px; padding:3px; margin-top:0; margin-bottom:0 ">Cancel</button>
+
+
+				<div id="success-message"
+					style="display: none; color: rgba(11, 0, 0, 0.997); font-size: 22px; font-weight: 500;    margin-left: 246px; ">
+					Upload
+					Successful!</div>
+			</div>
 		</div>
 	</div>
 

@@ -1,6 +1,6 @@
-// const API_URL = "http://localhost:5000/api";
+const API_URL = "http://localhost:5000/api";
 // const API_URL = "http://alpha.yourarchiv.com/api";
-const API_URL = "http://yourarchiv.com/api";
+// const API_URL = "http://yourarchiv.com/api";
 
 let shouldStop = false;
 document.body.style.zoom = "80%";
@@ -16,6 +16,10 @@ var crop = document.querySelector('#crop');
 const stopButton = document.getElementById('stop');
 const title = document.getElementById('title');
 const description = document.getElementById('description');
+
+const progressBar = document.getElementById('progress-bar-inner');
+const cancelButton = document.getElementById('cancel-button');
+const progressBars = document.getElementById("progress-bar");
 
 const params = Object.fromEntries(new URLSearchParams(location.search));
 
@@ -113,6 +117,54 @@ const handleRecord = function ({ stream, mimeType }) {
 //Form data type 
 
 
+// async function UploadVideo(blob) {
+//     try {
+//         const url = `${API_URL}/ext/video`;
+//         const formData = new FormData();
+//         formData.append('title', title.value);
+//         formData.append('description', description.value);
+//         formData.append('date', new Date().toISOString().slice(0, 16));
+//         const filename = `video_${Math.floor(Math.random() * 100000000)}.mp4`;
+//         formData.append('video', blob, filename)
+//         const token = await GetStorageToken("token")
+
+
+//         const response = await fetch(url, {
+//             method: 'POST',
+//             headers: {
+//                 'Authorization': 'bearer ' + token,
+//             },
+//             body: formData
+//         });
+
+//         if (response.ok) {
+//             console.log('Video uploaded successfully');
+//             // create video element and add to DOM
+//             const video = document.createElement('video');
+//             video.controls = true;
+//             const source = document.createElement('source');
+
+//             source.src = URL.createObjectURL(blob);
+//             source.type = 'video/mp4';
+//             video.appendChild(source);
+//             document.body.appendChild(video);
+
+
+//             console.log('xxxxxxxxxxxxxxxxxxxxxxxxxx');
+//             // window.close()
+//         } else {
+//             console.log('Error uploading video:', response.statusText);
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+
+// }
+
+/*************** */
+
+// const uploadingMessage = document.getElementById("uploading-message")
+// const successMessage = document.getElementById("success-message")
 async function UploadVideo(blob) {
     try {
         const url = `${API_URL}/ext/video`;
@@ -121,41 +173,77 @@ async function UploadVideo(blob) {
         formData.append('description', description.value);
         formData.append('date', new Date().toISOString().slice(0, 16));
         const filename = `video_${Math.floor(Math.random() * 100000000)}.mp4`;
-        formData.append('video', blob, filename)
-        const token = await GetStorageToken("token")
+        formData.append('video', blob, filename);
+        const token = await GetStorageToken("token");
 
-        console.log('formData>>>>>>>>>>>>', formData);
+        // Display the progress bar and cancel button
+        progressBar.style.width = '0%';
+        progressBar.style.display = 'block';
+        cancelButton.style.display = 'block';
+        progressBars.style.display = "block";
+        const xhr = new XMLHttpRequest();
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'bearer ' + token,
-            },
-            body: formData
+        xhr.upload.addEventListener('progress', (event) => {
+            if (event.lengthComputable) {
+                const percentComplete = (event.loaded / event.total) * 100;
+                progressBar.style.width = percentComplete + '%';
+                // uploadingMessage.style.display = "block";
+
+                if (percentComplete === 100) {
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        cancelButton.style.display = 'none';
+                        progressBars.style.display = "none";
+                        // uploadingMessage.style.display = "none";
+                        // successMessage.style.display = 'block';
+
+                    }, 500)
+                }
+
+            }
         });
 
-        if (response.ok) {
-            console.log('Video uploaded successfully');
-            // create video element and add to DOM
-            const video = document.createElement('video');
-            video.controls = true;
-            const source = document.createElement('source');
+        cancelButton.addEventListener('click', () => {
+            xhr.abort();
+            progressBar.style.display = 'none';
+            cancelButton.style.display = 'none';
+        });
 
-            source.src = URL.createObjectURL(blob);
-            source.type = 'video/mp4';
-            video.appendChild(source);
-            document.body.appendChild(video);
+        xhr.open('POST', url);
+        xhr.setRequestHeader('Authorization', 'bearer ' + token);
 
+        xhr.onload = () => {
 
-            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxx');
-            // window.close()
-        } else {
-            console.log('Error uploading video:', response.statusText);
-        }
+            if (xhr.status === 200) {
+
+                cancelButton.style.display = 'none';
+                cancelButton.disabled = true
+                console.log('Video uploaded successfully');
+                // create video element and add to DOM
+                const video = document.createElement('video');
+                video.controls = true;
+                const source = document.createElement('source');
+                source.src = URL.createObjectURL(blob);
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                document.body.appendChild(video);
+            } else {
+
+                const x = JSON.parse(xhr.response)
+                progressBar.style.display = "none";
+                cancelButton.style.display = "none";
+
+                alert(x.error.message[0])
+            }
+        };
+        xhr.send(formData);
     } catch (error) {
         console.log(error.message);
     }
 }
+//***************************** */
+
+
 
 async function GetStorageToken(key) {
     var p = new Promise(function (resolve, reject) {
