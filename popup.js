@@ -10,11 +10,11 @@ var selections;
 // const API_URL = "http://alpha.yourarchiv.com/api";
 // const WEBSITE_URL = "http://alpha.yourarchiv.com";
 
-// const API_URL = "http://yourarchiv.com/api";
-// const WEBSITE_URL = "http://yourarchiv.com";
+const API_URL = "http://yourarchiv.com/api";
+const WEBSITE_URL = "http://yourarchiv.com";
 
-const API_URL = "http://localhost:5000/api";
-const WEBSITE_URL = "http://localhost:3000";
+// const API_URL = "http://localhost:5000/api";
+// const WEBSITE_URL = "http://localhost:3000";
 
 var finalScreenshot = null;
 var finalScreenshot2 = null;
@@ -305,6 +305,7 @@ async function SelectTab(tab) {
 
 
 	$("#lbl-username").text(`👤 ${localStorage.getItem('lbl-username')}`)
+
 	if (tab === "audio") {
 		$("#tabAudio").addClass("active")
 		$("#tabText").removeClass("active")
@@ -332,6 +333,7 @@ async function SelectTab(tab) {
 		$("#tabAudio").css("color", "black");
 		$("#articlePanel").show();
 		$("#audioPanel").hide();
+		$("#description").show();
 	}
 
 	// await SessionData.set("tab", tab) 
