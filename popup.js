@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(OnLoad, 0
 
 document.getElementById("tabAudio").addEventListener("click", () => SelectTab("audio"))
 document.getElementById("tabText").addEventListener("click", () => SelectTab("text"))
+document.getElementById("btnrecording").addEventListener("click", () => SelectTab("video"))
 
 const progressBar = document.getElementById('progress-bar-inner');
 const cancelButton = document.getElementById('cancel-button');
@@ -65,9 +66,10 @@ cancelButton.addEventListener('click', cancelUpload)
 
 async function OnLoad() {
 	const selectedTab = localStorage.getItem('tab')
-	if (selectedTab && selectedTab === "text")
-		SelectTab("text");
-	else SelectTab("audio");
+	if (selectedTab && selectedTab === "text") {
+		SelectTab("text")
+	}
+	else if (selectedTab === "audio") { SelectTab("audio") } else { SelectTab("video") };
 
 	// recordings
 
@@ -288,11 +290,19 @@ const addBgColor = (tab) => {
 	if (tab === "audio") {
 		$("#tabAudio").css("background", "#333")
 		$("#tabText").css("background", "#FFC90E");
+		$("#btnrecording").css("background", "#FFC90E");
 
-	} else {
+	} else if (tab === "text") {
 		$("#tabText").css("background", "#333");
 		$("#tabAudio").css("background", "#FFC90E");
+		$("#btnrecording").css("background", "#FFC90E");
 
+
+	}
+	else {
+		$("#tabText").css("background", "#FFC90E");
+		$("#tabAudio").css("background", "#FFC90E");
+		$("#btnrecording").css("background", "#333");
 	}
 }
 
@@ -305,7 +315,6 @@ async function SelectTab(tab) {
 
 
 	$("#lbl-username").text(`👤 ${localStorage.getItem('lbl-username')}`)
-
 	if (tab === "audio") {
 		$("#tabAudio").addClass("active")
 		$("#tabText").removeClass("active")
@@ -330,10 +339,29 @@ async function SelectTab(tab) {
 
 
 		$("#tabText").css("color", "#fff");
+		$("#btnrecording").css("color", "black");
 		$("#tabAudio").css("color", "black");
+
 		$("#articlePanel").show();
 		$("#audioPanel").hide();
 		$("#description").show();
+	}
+
+	else if (tab === "video") {
+		// $("#tabsPanel").css("background-image", "linear-gradient(-135deg, #FFC90E 70%, #bbb 70%)");
+		// $("#tabSelected").attr("style", "background-image: linear-gradient(-135deg, #333 70%, #FFC90E 70%) !important");
+
+		$("#btnrecording").addClass("active")
+		$("#tabAudio").removeClass("active")
+		$("#tabText").removeClass("active")
+
+		$("#tabText").css("color", "black");
+		$("#tabAudio").css("color", "black");
+		$("#btnrecording").css("color", "#fff");
+
+		$("#articlePanel").hide();
+		$("#audioPanel").hide();
+		$("#description").hide();
 	}
 
 	// await SessionData.set("tab", tab) 

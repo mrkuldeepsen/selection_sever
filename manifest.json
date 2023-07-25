@@ -1,7 +1,7 @@
 {
 	"name": "Selection Saver",
 	"description": "",
-	"version": "3.2",
+	"version": "3.3",
 	"manifest_version": 3,
 	"content_scripts":[
 		{
